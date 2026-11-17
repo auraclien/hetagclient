@@ -21,11 +21,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build with Gradle
-        run: gradle build --no-daemon
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: killaura-crit
-          path: build/libs/*.jar
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
