@@ -18,20 +18,15 @@ jobs:
           distribution: temurin
           java-version: '21'
 
-      # ВОТ ОН, ВОЛШЕБНЫЙ ШАГ:
-      # Он берет наш файл gradle-wrapper.properties (который мы сделали в прошлый раз)
-      # и сам генерирует рабочий gradlew и gradle-wrapper.jar
-      - name: Generate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4
-        
-      - name: Setup Gradle
+      # Устанавливаем конкретную версию Gradle 8.10.2 прямо на сервер
+      - name: Setup Gradle 8.10.2
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.10.2
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
+      # Собираем системным Gradle (без ./gradlew)
       - name: Build with Gradle
-        run: ./gradlew build --no-daemon
+        run: gradle build --no-daemon
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
