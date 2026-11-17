@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "id": "killauracrit",
+  "version": "${version}",
+  "name": "KillAura Crit",
+  "description": "KillAura только с критами, тоггл на R. Для тестов на своём сервере.",
+  "authors": ["Rocket Way"],
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["rocketway.killauracrit.KillAuraCritClient"]
+  },
+  "mixins": ["killauracrit.mixins.json"],
+  "depends": {
+    "fabricloader": ">=0.16.9",
+    "fabric-api": "*",
+    "minecraft": "~1.21.11",
+    "java": ">=21"
+  }
+}
