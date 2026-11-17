@@ -1,18 +1,38 @@
-package rocketway.killauracrit;
+package com.rocket.killauracrit;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
+import org.lwjgl.glfw.GLFW;
 
-public class KillAuraCritClient implements ClientModInitializer {
+public class MainClient implements ClientModInitializer {
+
+    public static KillAura aura;
+    private static KeyBinding toggleKey;
 
     @Override
     public void onInitializeClient() {
-        Keybinds.register();
+        aura = new KillAura();
+
+        // В 1.21.11 категория клавиши задается как строка
+        toggleKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.ikaclient.toggle_aura",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_R,
+                "category.ikaclient"
+        ));
+
         HudRenderer.register();
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            Keybinds.handleToggle();       // R — вкл/выкл
-            CritKillAura.onTick(client);   // логика ауры
+            while (toggleKey.wasPressed()) {
+                aura.toggle();
+            }
+            if (client.player != null && client.world != null) {
+                aura.tick(client);
+            }
         });
     }
 }
